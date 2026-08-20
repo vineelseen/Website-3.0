@@ -2,6 +2,7 @@ export const RM_COLORS = {
   primary: '#194F90',
   highlight: '#2563EB',
   accent: '#5B9BE0',
+  particleBright: '#DCEEFF',
   backgroundDark: '#020817',
   backgroundMid: '#061426',
   backgroundLight: '#0E2748',

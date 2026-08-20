@@ -3,8 +3,9 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useHeroContext } from '../../context/HeroContext'
 import { RM_EYE_POSITION } from '../../config/assets'
+import { buildRMEyeParts } from '../../geometry/rmEye'
+import { geometryToParticles } from '../../utils/geometryToParticles'
 import { particleVertexShader, particleFragmentShader } from '../../shaders/particleShaders'
-import { sampleParticlesFromGeometry } from '../../utils/particleGeometry'
 import { damp } from '../../utils/easing'
 import { RM_COLORS } from '../../constants/colors'
 
@@ -16,38 +17,48 @@ function hexToVec3(hex: string): THREE.Vector3 {
 export function RMEyeCore() {
   const groupRef = useRef<THREE.Group>(null)
   const coreMatRef = useRef<THREE.ShaderMaterial>(null)
-  const ringRefs = useRef<THREE.Mesh[]>([])
+  const orbitMatRef = useRef<THREE.ShaderMaterial>(null)
   const breathRef = useRef(0)
 
   const { rmEyePulse, reducedMotion, performance } = useHeroContext()
 
-  const coreGeometry = useMemo(() => {
-    const sphere = new THREE.IcosahedronGeometry(0.35, 3)
-    const ring1 = new THREE.TorusGeometry(0.55, 0.008, 8, 48)
-    const ring2 = new THREE.TorusGeometry(0.7, 0.006, 8, 48)
-    ring2.rotateX(Math.PI / 3)
-    const disc = new THREE.CircleGeometry(0.2, 24)
-
-    const coreParticles = sampleParticlesFromGeometry(sphere, Math.floor(1200 * performance.particleMultiplier))
-
-    return { coreParticles, ring1, ring2, disc }
+  const coreParticleData = useMemo(() => {
+    const parts = buildRMEyeParts()
+    const coreCount = Math.floor(1400 * performance.particleMultiplier)
+    return geometryToParticles(parts, coreCount)
   }, [performance.particleMultiplier])
 
-  const pointsGeometry = useMemo(() => {
-    const geo = new THREE.BufferGeometry()
-    geo.setAttribute('position', new THREE.BufferAttribute(coreGeometry.coreParticles.positions, 3))
-    geo.setAttribute('aNormal', new THREE.BufferAttribute(coreGeometry.coreParticles.normals, 3))
-    geo.setAttribute('aRandom', new THREE.BufferAttribute(coreGeometry.coreParticles.randoms, 1))
-    return geo
-  }, [coreGeometry])
+  const orbitParticleData = useMemo(() => {
+    const orbitParts = buildRMEyeParts().filter((_, i) => i >= 2)
+    const orbitCount = Math.floor(600 * performance.particleMultiplier)
+    return geometryToParticles(orbitParts, orbitCount)
+  }, [performance.particleMultiplier])
 
-  const coreMaterial = useMemo(() => {
-    return new THREE.ShaderMaterial({
+  const buildPointsGeo = (data: ReturnType<typeof geometryToParticles>) => {
+    const geo = new THREE.BufferGeometry()
+    geo.setAttribute('position', new THREE.BufferAttribute(data.positions, 3))
+    geo.setAttribute('aNormal', new THREE.BufferAttribute(data.normals, 3))
+    geo.setAttribute('aRandom', new THREE.BufferAttribute(data.randoms, 1))
+    geo.setAttribute('aWeight', new THREE.BufferAttribute(data.weights, 1))
+    return geo
+  }
+
+  const corePointsGeometry = useMemo(
+    () => buildPointsGeo(coreParticleData),
+    [coreParticleData],
+  )
+  const orbitPointsGeometry = useMemo(
+    () => buildPointsGeo(orbitParticleData),
+    [orbitParticleData],
+  )
+
+  const makeMaterial = (intensity: number) =>
+    new THREE.ShaderMaterial({
       vertexShader: particleVertexShader,
       fragmentShader: particleFragmentShader,
       uniforms: {
         uTime: { value: 0 },
-        uIntensity: { value: 0.45 },
+        uIntensity: { value: intensity },
         uHover: { value: 0 },
         uPushBack: { value: 0 },
         uMouse: { value: new THREE.Vector3() },
@@ -55,86 +66,65 @@ export function RMEyeCore() {
         uEnableProximity: { value: 0 },
         uReducedMotion: { value: 0 },
         uColorPrimary: { value: hexToVec3(RM_COLORS.primary) },
+        uColorHighlight: { value: hexToVec3(RM_COLORS.highlight) },
         uColorAccent: { value: hexToVec3(RM_COLORS.accent) },
-        uHalo: { value: 0.3 },
+        uColorBright: { value: hexToVec3(RM_COLORS.particleBright) },
+        uHalo: { value: 0.25 },
       },
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
     })
-  }, [])
+
+  const coreMaterial = useMemo(() => makeMaterial(0.5), [])
+  const orbitMaterial = useMemo(() => makeMaterial(0.3), [])
 
   coreMatRef.current = coreMaterial
+  orbitMatRef.current = orbitMaterial
 
   useFrame((state, delta) => {
-    const mat = coreMatRef.current
-    if (!mat || !groupRef.current) return
+    const coreMat = coreMatRef.current
+    const orbitMat = orbitMatRef.current
+    if (!coreMat || !orbitMat || !groupRef.current) return
 
     const breath = reducedMotion
       ? 0.45
-      : 0.4 + Math.sin(state.clock.elapsedTime * 0.6) * 0.08
+      : 0.38 + Math.sin(state.clock.elapsedTime * 0.55) * 0.07
 
-    breathRef.current = damp(breathRef.current, breath + rmEyePulse * 0.35, 5, delta)
+    breathRef.current = damp(breathRef.current, breath + rmEyePulse * 0.3, 5, delta)
 
-    mat.uniforms.uTime.value = state.clock.elapsedTime
-    mat.uniforms.uIntensity.value = breathRef.current
-    mat.uniforms.uHalo.value = 0.3 + rmEyePulse * 0.5
-    mat.uniforms.uReducedMotion.value = reducedMotion ? 1 : 0
+    const t = state.clock.elapsedTime
+    coreMat.uniforms.uTime.value = t
+    coreMat.uniforms.uIntensity.value = breathRef.current
+    coreMat.uniforms.uHalo.value = 0.25 + rmEyePulse * 0.45
+    coreMat.uniforms.uReducedMotion.value = reducedMotion ? 1 : 0
 
-    // Subtle ring rotation
-    ringRefs.current.forEach((ring, i) => {
-      if (ring && !reducedMotion) {
-        ring.rotation.z += delta * (0.15 + i * 0.05)
-        ring.rotation.x += delta * 0.08
-      }
-    })
+    orbitMat.uniforms.uTime.value = t
+    orbitMat.uniforms.uIntensity.value = breathRef.current * 0.65
+    orbitMat.uniforms.uHalo.value = 0.15 + rmEyePulse * 0.3
+    orbitMat.uniforms.uReducedMotion.value = reducedMotion ? 1 : 0
 
-    // Pulse scale
-    const scale = 1 + rmEyePulse * 0.06
+    if (!reducedMotion) {
+      groupRef.current.rotation.y = t * 0.08
+    }
+
+    const scale = 1 + rmEyePulse * 0.05
     groupRef.current.scale.setScalar(damp(groupRef.current.scale.x, scale, 8, delta))
   })
 
   useEffect(() => {
     return () => {
-      pointsGeometry.dispose()
+      corePointsGeometry.dispose()
+      orbitPointsGeometry.dispose()
       coreMaterial.dispose()
-      coreGeometry.ring1.dispose()
-      coreGeometry.ring2.dispose()
-      coreGeometry.disc.dispose()
+      orbitMaterial.dispose()
     }
-  }, [pointsGeometry, coreMaterial, coreGeometry])
+  }, [corePointsGeometry, orbitPointsGeometry, coreMaterial, orbitMaterial])
 
   return (
     <group ref={groupRef} position={RM_EYE_POSITION}>
-      <points geometry={pointsGeometry} material={coreMaterial} />
-
-      <mesh ref={(el) => { if (el) ringRefs.current[0] = el }} geometry={coreGeometry.ring1}>
-        <meshBasicMaterial
-          color={RM_COLORS.accent}
-          transparent
-          opacity={0.15}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-
-      <mesh ref={(el) => { if (el) ringRefs.current[1] = el }} geometry={coreGeometry.ring2}>
-        <meshBasicMaterial
-          color={RM_COLORS.highlight}
-          transparent
-          opacity={0.1}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-
-      <mesh geometry={coreGeometry.disc} rotation={[-Math.PI / 2, 0, 0]}>
-        <meshBasicMaterial
-          color={RM_COLORS.primary}
-          transparent
-          opacity={0.08}
-          side={THREE.DoubleSide}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
+      <points geometry={corePointsGeometry} material={coreMaterial} />
+      <points geometry={orbitPointsGeometry} material={orbitMaterial} />
     </group>
   )
 }

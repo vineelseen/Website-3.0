@@ -16,8 +16,6 @@ export type AssetId =
 export interface AssetConfig {
   id: AssetId
   name: string
-  /** Configurable GLB/GLTF model URL — swap in production assets without code changes */
-  model?: string
   position: Vector3Tuple
   rotation: Vector3Tuple
   scale: number
@@ -25,12 +23,10 @@ export interface AssetConfig {
   idleOpacity: number
   hoverIntensity: number
   connectionTarget: 'rm-eye'
-  /** Depth layer for parallax separation */
   depthLayer: 'foreground' | 'midground' | 'background'
-  /** Show on mobile (below 768px) */
   mobileVisible: boolean
-  /** Placeholder geometry key when no model is loaded */
-  placeholder: string
+  /** Invisible hitbox dimensions for pointer interaction */
+  hitbox: Vector3Tuple
 }
 
 export interface PerformanceSettings {

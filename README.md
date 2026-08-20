@@ -2,6 +2,8 @@
 
 A production-ready, full-width interactive hero section featuring a **Living Electrical Asset Ecosystem** built with Vite, React, TypeScript, and React Three Fiber.
 
+All electrical assets are generated **100% procedurally** using Three.js primitive geometries — no external 3D models, images, or asset files required.
+
 ## Quick Start
 
 ```bash
@@ -18,43 +20,27 @@ npm run build
 npm run preview
 ```
 
-## WordPress / Elementor Integration
+## Procedural Asset System
 
-The hero is a self-contained React component (`ParticleHero`) that can be embedded into WordPress via:
+Each electrical asset is constructed from Three.js primitives (boxes, cylinders, torus, tubes, etc.) as an invisible construction framework. Particle positions are sampled from the combined geometry surfaces and rendered as `THREE.Points`.
 
-1. Build the project (`npm run build`)
-2. Enqueue the generated JS/CSS from `dist/` in your theme or via a custom Elementor widget
-3. Mount to a container element: `<div id="rm-hero-root"></div>`
+Asset definitions live in `src/geometry/assets/`:
 
-Typography and CTA remain accessible HTML layered above the WebGL canvas.
+| File | Asset |
+|------|-------|
+| `powerTransformer.ts` | Power Transformer |
+| `dryTypeTransformer.ts` | Dry-Type Transformer |
+| `gis.ts` | Gas Insulated Switchgear |
+| `circuitBreaker.ts` | Circuit Breaker |
+| `rotatingMachine.ts` | Rotating Machine |
+| `ais.ts` | Air Insulated Switchgear |
+| `powerCables.ts` | Power Cables |
+| `shuntReactor.ts` | Shunt Reactor |
+| `capacitorBank.ts` | Capacitor Bank |
 
-## GLB Model Placement
+Positions, scale, and interaction settings are in `src/config/assets.ts`.
 
-Place optimized `.glb` / `.gltf` electrical asset models in:
-
-```
-public/models/
-```
-
-Then map each file in `src/config/models.ts`:
-
-```ts
-export const MODEL_URLS: Partial<Record<AssetId, string>> = {
-  'power-transformer': '/models/power-transformer.glb',
-  'dry-type-transformer': '/models/dry-type-transformer.glb',
-  'gis': '/models/gis.glb',
-  'ais': '/models/ais.glb',
-  'circuit-breaker': '/models/circuit-breaker.glb',
-  'rotating-machine': '/models/rotating-machine.glb',
-  'power-cables': '/models/power-cables.glb',
-  'shunt-reactor': '/models/shunt-reactor.glb',
-  'capacitor-bank': '/models/capacitor-bank.glb',
-}
-```
-
-Asset positions, density, and interaction settings are configured in `src/config/assets.ts`.
-
-When a model URL is set, the system samples particle positions from the model geometry. Until models are provided, clearly marked placeholder geometries are used.
+To adjust an asset's silhouette, edit its geometry parts in the corresponding file. Each part supports `position`, `rotation`, `scale`, and `weight` (particle density).
 
 ## Architecture
 
@@ -65,10 +51,12 @@ When a model URL is set, the system samples particle positions from the model ge
 | `EcosystemScene` | R3F Canvas and scene composition |
 | `ParticleAsset` | Reusable particle digital twin |
 | `DataStream` | Animated particle paths to RM EYE |
-| `RMEyeCore` | Intelligence node at scene center-right |
-| `CursorInteraction` | Pointer tracking for parallax/proximity |
-| `CameraParallax` | Subtle mouse-based camera response |
-| `PerformanceManager` | Adaptive quality tiers |
+| `RMEyeCore` | Procedural intelligence node |
+| `geometryToParticles()` | Surface sampling utility |
+
+## WordPress / Elementor Integration
+
+Build the project, enqueue `dist/` assets, and mount to a container element. Typography and CTA remain accessible HTML above the WebGL canvas.
 
 ## Performance Tiers
 
