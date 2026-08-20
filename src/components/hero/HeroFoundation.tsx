@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { POWER_TRANSFORMER_STAGE4 } from '../../config/powerTransformerStage4'
 import { FoundationScene } from '../three/FoundationScene'
 import { HeroTypography } from './HeroTypography'
 import './HeroFoundation.css'
@@ -8,8 +9,8 @@ import './HeroFoundation.css'
  *
  * Layer order:
  *   1. CSS background gradient
- *   2. Three.js canvas — RM EYE particles (Stage 3)
- *   3. HTML headline + CTA (Stage 2, locked)
+ *   2. Three.js canvas — power transformer particles (Stage 4) + RM EYE (Stage 3)
+ *   3. HTML headline + CTA (Stage 2, locked) + asset labels
  */
 export function HeroFoundation() {
   const [webglSupported, setWebglSupported] = useState(true)
@@ -36,6 +37,15 @@ export function HeroFoundation() {
 
       <div className="hero-foundation__content">
         <HeroTypography />
+        <span
+          className="hero-foundation__asset-label"
+          style={{
+            left: POWER_TRANSFORMER_STAGE4.label.left,
+            top: POWER_TRANSFORMER_STAGE4.label.top,
+          }}
+        >
+          {POWER_TRANSFORMER_STAGE4.labelText}
+        </span>
       </div>
     </section>
   )

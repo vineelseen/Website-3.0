@@ -1,4 +1,5 @@
 import { Canvas } from '@react-three/fiber'
+import { PowerTransformerStage4 } from './PowerTransformerStage4'
 import { RMEyeParticles } from './RMEyeParticles'
 
 /**
@@ -37,7 +38,8 @@ export function FoundationScene() {
       dpr={[1, 2]}
       style={{ position: 'absolute', inset: 0 }}
     >
-      {/* Stage 3: RM EYE particle typography only */}
+      {/* Stage 4: power transformer (particles) — before RM EYE in scene graph */}
+      <PowerTransformerStage4 />
       <RMEyeParticles />
     </Canvas>
   )

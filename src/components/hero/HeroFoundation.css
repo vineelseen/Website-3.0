@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
 .hero-foundation {
   position: relative;
   width: 100%;
@@ -41,4 +43,16 @@
   inset: 0;
   z-index: 10;
   pointer-events: none;
+}
+
+.hero-foundation__asset-label {
+  position: absolute;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(0.55rem, 0.65vw, 0.68rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(37, 99, 235, 0.35);
+  pointer-events: none;
+  white-space: nowrap;
 }
