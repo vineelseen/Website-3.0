@@ -1,0 +1,31 @@
+{
+  "checks": {
+    "url": "http://localhost:5173/",
+    "title": "Rugged Monitoring | One Health Platform",
+    "hasCanvas": 1,
+    "hasHeadline": true,
+    "headlineText": "ONE HEALTH PLATFORM\nFOR ALL YOUR\nELECTRICAL ASSETS.",
+    "hasCta": true,
+    "heroSection": true,
+    "canvasWidth": 1440,
+    "canvasHeight": 900,
+    "webglContext": "ok",
+    "pixelSample": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "errors": [],
+  "logs": [
+    "[debug] [vite] connecting...",
+    "[debug] [vite] connected.",
+    "[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+    "[warning] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+    "[warning] [.WebGL-0x9ec00164200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "[warning] [.WebGL-0x9ec00164200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "[warning] [.WebGL-0x9ec00164200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+    "[warning] [.WebGL-0x9ec00164200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+  ]
+}

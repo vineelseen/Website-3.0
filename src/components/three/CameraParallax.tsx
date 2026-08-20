@@ -11,9 +11,9 @@ export function CameraParallax() {
   useFrame((_, delta) => {
     if (reducedMotion || performance.parallaxStrength === 0) return
 
-    const strength = performance.parallaxStrength * 0.018
+    const strength = performance.parallaxStrength * 0.012
     const targetY = mouse.x * strength
-    const targetX = -mouse.y * strength * 0.5
+    const targetX = -mouse.y * strength * 0.4
 
     currentRot.current.y = damp(currentRot.current.y, targetY, 3, delta)
     currentRot.current.x = damp(currentRot.current.x, targetX, 3, delta)

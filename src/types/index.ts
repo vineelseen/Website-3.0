@@ -16,6 +16,7 @@ export type AssetId =
 export interface AssetConfig {
   id: AssetId
   name: string
+  label: string
   position: Vector3Tuple
   rotation: Vector3Tuple
   scale: number
@@ -25,8 +26,9 @@ export interface AssetConfig {
   connectionTarget: 'rm-eye'
   depthLayer: 'foreground' | 'midground' | 'background'
   mobileVisible: boolean
-  /** Invisible hitbox dimensions for pointer interaction */
   hitbox: Vector3Tuple
+  /** Screen-space label position (% from top-left) */
+  labelPosition: { left: string; top: string }
 }
 
 export interface PerformanceSettings {
@@ -36,12 +38,4 @@ export interface PerformanceSettings {
   enableProximity: boolean
   parallaxStrength: number
   dpr: [number, number]
-}
-
-export interface InteractionState {
-  hoveredAssetId: AssetId | null
-  proximityAssetId: AssetId | null
-  mouse: { x: number; y: number }
-  rmEyePulse: number
-  dataPulseAssetId: AssetId | null
 }

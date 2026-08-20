@@ -29,18 +29,18 @@ function settingsForQuality(quality: QualityLevel, reducedMotion: boolean): Perf
       return {
         quality,
         particleMultiplier: 0.65,
-        enableBloom: true,
+        enableBloom: false,
         enableProximity: !reducedMotion,
-        parallaxStrength: reducedMotion ? 0 : 0.7,
+        parallaxStrength: reducedMotion ? 0 : 0.6,
         dpr: [1, 1.5],
       }
     default:
       return {
         quality,
         particleMultiplier: 1,
-        enableBloom: true,
+        enableBloom: false,
         enableProximity: !reducedMotion,
-        parallaxStrength: reducedMotion ? 0 : 1,
+        parallaxStrength: reducedMotion ? 0 : 0.8,
         dpr: [1, 2],
       }
   }

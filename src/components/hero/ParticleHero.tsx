@@ -3,7 +3,6 @@ import { HeroProvider } from '../../context/HeroContext'
 import { usePerformanceManager, useReducedMotion } from '../../hooks/usePerformanceManager'
 import { EcosystemScene } from '../three/EcosystemScene'
 import { HeroContent } from './HeroContent'
-import { HERO_GRADIENT } from '../../constants/colors'
 import './ParticleHero.css'
 
 export function ParticleHero() {
@@ -33,14 +32,14 @@ export function ParticleHero() {
   return (
     <HeroProvider performance={performance} reducedMotion={reducedMotion} isMobile={isMobile}>
       <section className="particle-hero" aria-label="Rugged Monitoring Hero">
-        <div className="particle-hero__background" style={{ background: HERO_GRADIENT }} />
+        <div className="particle-hero__background" />
 
         {webglSupported ? (
           <div className="particle-hero__canvas">
             <EcosystemScene />
           </div>
         ) : (
-          <div className="particle-hero__fallback" style={{ background: HERO_GRADIENT }} />
+          <div className="particle-hero__fallback" />
         )}
 
         <HeroContent />

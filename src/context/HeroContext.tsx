@@ -1,15 +1,20 @@
-import { createContext, useContext, useCallback, useRef, useState, type ReactNode } from 'react'
+import { createContext, useContext, useCallback, useRef, useState, type MutableRefObject, type ReactNode } from 'react'
 import type { AssetId } from '../types'
 import type { PerformanceSettings } from '../types'
+
+export interface PulseRef {
+  value: number
+  target: number
+}
 
 interface HeroContextValue {
   performance: PerformanceSettings
   reducedMotion: boolean
   hoveredAssetId: AssetId | null
   setHoveredAssetId: (id: AssetId | null) => void
-  rmEyePulse: number
+  rmEyePulseRef: MutableRefObject<PulseRef>
   triggerRmEyePulse: () => void
-  dataPulseAssetId: AssetId | null
+  activeDataAssetId: AssetId | null
   triggerDataPulse: (id: AssetId) => void
   mouse: { x: number; y: number }
   setMouse: (x: number, y: number) => void
@@ -30,22 +35,19 @@ export function HeroProvider({
   isMobile: boolean
 }) {
   const [hoveredAssetId, setHoveredAssetId] = useState<AssetId | null>(null)
-  const [rmEyePulse, setRmEyePulse] = useState(0)
-  const [dataPulseAssetId, setDataPulseAssetId] = useState<AssetId | null>(null)
+  const [activeDataAssetId, setActiveDataAssetId] = useState<AssetId | null>(null)
   const [mouse, setMouseState] = useState({ x: 0, y: 0 })
-  const pulseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const rmEyePulseRef = useRef<PulseRef>({ value: 0, target: 0 })
   const dataTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const triggerRmEyePulse = useCallback(() => {
-    setRmEyePulse(1)
-    if (pulseTimeout.current) clearTimeout(pulseTimeout.current)
-    pulseTimeout.current = setTimeout(() => setRmEyePulse(0), 700)
+    rmEyePulseRef.current.target = 1
   }, [])
 
   const triggerDataPulse = useCallback((id: AssetId) => {
-    setDataPulseAssetId(id)
+    setActiveDataAssetId(id)
     if (dataTimeout.current) clearTimeout(dataTimeout.current)
-    dataTimeout.current = setTimeout(() => setDataPulseAssetId(null), 800)
+    dataTimeout.current = setTimeout(() => setActiveDataAssetId(null), 1200)
   }, [])
 
   const setMouse = useCallback((x: number, y: number) => {
@@ -59,9 +61,9 @@ export function HeroProvider({
         reducedMotion,
         hoveredAssetId,
         setHoveredAssetId,
-        rmEyePulse,
+        rmEyePulseRef,
         triggerRmEyePulse,
-        dataPulseAssetId,
+        activeDataAssetId,
         triggerDataPulse,
         mouse,
         setMouse,

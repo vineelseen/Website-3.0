@@ -5,7 +5,7 @@ import type { AssetConfig } from '../../types'
 import { useHeroContext } from '../../context/HeroContext'
 import { PROCEDURAL_ASSETS } from '../../geometry/assets'
 import { geometryToParticles, getBaseParticleCount } from '../../utils/geometryToParticles'
-import { particleVertexShader, particleFragmentShader } from '../../shaders/particleShaders'
+import { assetVertexShader, assetFragmentShader } from '../../shaders'
 import { damp } from '../../utils/easing'
 import { RM_COLORS } from '../../constants/colors'
 
@@ -19,10 +19,10 @@ function hexToVec3(hex: string): THREE.Vector3 {
 }
 
 export function ParticleAsset({ config }: ParticleAssetProps) {
-  const groupRef = useRef<THREE.Group>(null)
   const materialRef = useRef<THREE.ShaderMaterial>(null)
   const hoverRef = useRef(0)
   const intensityRef = useRef(config.idleOpacity)
+  const pushRef = useRef(0)
 
   const {
     performance,
@@ -53,30 +53,29 @@ export function ParticleAsset({ config }: ParticleAssetProps) {
     return geo
   }, [particleData])
 
-  const material = useMemo(() => {
-    return new THREE.ShaderMaterial({
-      vertexShader: particleVertexShader,
-      fragmentShader: particleFragmentShader,
-      uniforms: {
-        uTime: { value: 0 },
-        uIntensity: { value: config.idleOpacity },
-        uHover: { value: 0 },
-        uPushBack: { value: 0 },
-        uMouse: { value: new THREE.Vector3() },
-        uProximityRadius: { value: 0.8 },
-        uEnableProximity: { value: performance.enableProximity ? 1 : 0 },
-        uReducedMotion: { value: reducedMotion ? 1 : 0 },
-        uColorPrimary: { value: hexToVec3(RM_COLORS.primary) },
-        uColorHighlight: { value: hexToVec3(RM_COLORS.highlight) },
-        uColorAccent: { value: hexToVec3(RM_COLORS.accent) },
-        uColorBright: { value: hexToVec3(RM_COLORS.particleBright) },
-        uHalo: { value: 0 },
-      },
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-    })
-  }, [config.idleOpacity, performance.enableProximity, reducedMotion])
+  const material = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        vertexShader: assetVertexShader,
+        fragmentShader: assetFragmentShader,
+        uniforms: {
+          uTime: { value: 0 },
+          uIntensity: { value: config.idleOpacity },
+          uHover: { value: 0 },
+          uPushBack: { value: 0 },
+          uCursor: { value: new THREE.Vector2() },
+          uEnableProximity: { value: performance.enableProximity ? 1 : 0 },
+          uReducedMotion: { value: reducedMotion ? 1 : 0 },
+          uColorDark: { value: hexToVec3(RM_COLORS.darkBlue) },
+          uColorPrimary: { value: hexToVec3(RM_COLORS.primary) },
+          uColorHighlight: { value: hexToVec3(RM_COLORS.highlight) },
+        },
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      }),
+    [config.idleOpacity, performance.enableProximity, reducedMotion],
+  )
 
   materialRef.current = material
 
@@ -87,42 +86,29 @@ export function ParticleAsset({ config }: ParticleAssetProps) {
     const mat = materialRef.current
     if (!mat) return
 
-    const targetHover = isHovered ? 1 : 0
-    hoverRef.current = damp(hoverRef.current, targetHover, 5.5, delta)
+    hoverRef.current = damp(hoverRef.current, isHovered ? 1 : 0, 5, delta)
 
     const targetIntensity = isHovered
       ? config.hoverIntensity
-      : config.idleOpacity + Math.sin(state.clock.elapsedTime * 0.5 + config.position[0]) * 0.025
+      : config.idleOpacity
 
     intensityRef.current = damp(intensityRef.current, targetIntensity, 5, delta)
+    pushRef.current = damp(pushRef.current, isOtherHovered ? 1 : 0, 4, delta)
 
     mat.uniforms.uTime.value = state.clock.elapsedTime
     mat.uniforms.uIntensity.value = intensityRef.current
     mat.uniforms.uHover.value = hoverRef.current
-    mat.uniforms.uPushBack.value = isOtherHovered
-      ? damp(mat.uniforms.uPushBack.value as number, 1, 4, delta)
-      : damp(mat.uniforms.uPushBack.value as number, 0, 4, delta)
-    mat.uniforms.uHalo.value = hoverRef.current * 0.55
-    mat.uniforms.uMouse.value.set(mouse.x * 4, mouse.y * 2.5, 0)
+    mat.uniforms.uPushBack.value = pushRef.current
+    mat.uniforms.uCursor.value.set(mouse.x, mouse.y)
     mat.uniforms.uEnableProximity.value = performance.enableProximity ? 1 : 0
     mat.uniforms.uReducedMotion.value = reducedMotion ? 1 : 0
-
-    if (groupRef.current && !reducedMotion) {
-      const targetRotY =
-        Math.atan2(1.8 - config.position[0], -2.5 - config.position[2]) * 0.05
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(
-        groupRef.current.rotation.y,
-        config.rotation[1] + targetRotY,
-        0.02,
-      )
-    }
   })
 
   const handlePointerOver = useCallback(() => {
     setHoveredAssetId(config.id)
-    triggerRmEyePulse()
     triggerDataPulse(config.id)
-  }, [config.id, setHoveredAssetId, triggerRmEyePulse, triggerDataPulse])
+    setTimeout(() => triggerRmEyePulse(), 400)
+  }, [config.id, setHoveredAssetId, triggerDataPulse, triggerRmEyePulse])
 
   const handlePointerOut = useCallback(() => {
     setHoveredAssetId(null)
@@ -138,14 +124,8 @@ export function ParticleAsset({ config }: ParticleAssetProps) {
   const [hx, hy, hz] = config.hitbox
 
   return (
-    <group
-      ref={groupRef}
-      position={config.position}
-      rotation={config.rotation}
-      scale={config.scale}
-    >
+    <group position={config.position} rotation={config.rotation} scale={config.scale}>
       <points geometry={pointsGeometry} material={material} />
-
       <mesh onPointerOver={handlePointerOver} onPointerOut={handlePointerOut} visible={false}>
         <boxGeometry args={[hx, hy, hz]} />
         <meshBasicMaterial transparent opacity={0} />

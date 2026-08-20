@@ -34,33 +34,32 @@ export function buildPowerTransformerParts(): GeometryPart[] {
     weight: 0.8,
   })
 
-  // Radiator banks — left side (multiple fin panels)
-  for (let i = 0; i < 5; i++) {
-    parts.push({
-      create: () => box(0.06, 1.0, 0.55),
-      position: [-1.08, -0.05, -0.35 + i * 0.18],
-      weight: 1.2,
-    })
+  // Radiator banks — left side (individual fins)
+  for (let bank = 0; bank < 2; bank++) {
+    for (let i = 0; i < 8; i++) {
+      parts.push({
+        create: () => box(0.03, 0.95, 0.45),
+        position: [-1.06 - bank * 0.08, -0.05, -0.38 + i * 0.11],
+        weight: 1.4,
+      })
+    }
   }
   parts.push({
     create: () => box(0.1, 1.1, 1.0),
-    position: [-1.12, -0.05, 0],
+    position: [-1.14, -0.05, 0],
     weight: 0.7,
   })
 
-  // Radiator banks — right side
-  for (let i = 0; i < 5; i++) {
-    parts.push({
-      create: () => box(0.06, 1.0, 0.55),
-      position: [1.08, -0.05, -0.35 + i * 0.18],
-      weight: 1.2,
-    })
+  // Radiator banks — right side (individual fins)
+  for (let bank = 0; bank < 2; bank++) {
+    for (let i = 0; i < 8; i++) {
+      parts.push({
+        create: () => box(0.03, 0.95, 0.45),
+        position: [1.06 + bank * 0.08, -0.05, -0.38 + i * 0.11],
+        weight: 1.4,
+      })
+    }
   }
-  parts.push({
-    create: () => box(0.1, 1.1, 1.0),
-    position: [1.12, -0.05, 0],
-    weight: 0.7,
-  })
 
   // Horizontal conservator tank
   const conservator = cylinder(0.18, 0.18, 1.5, 14)
