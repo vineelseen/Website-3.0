@@ -1,8 +1,8 @@
-import { ParticleHero } from './components/hero'
+import { HeroFoundation } from './components/hero'
 import './App.css'
 
 function App() {
-  return <ParticleHero />
+  return <HeroFoundation />
 }
 
 export default App
