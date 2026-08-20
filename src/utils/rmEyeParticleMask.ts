@@ -2,14 +2,17 @@ import * as THREE from 'three'
 
 export interface RmEyeParticleData {
   positions: Float32Array
+  randoms: Float32Array
   count: number
   boundingBox: THREE.Box3
 }
 
 const MASK_WIDTH = 1024
 const MASK_HEIGHT = 256
-const SAMPLE_GAP = 4
+const SAMPLE_GAP = 7
 const DEFAULT_SCALE = 0.0042
+/** Skip ~20% of samples to break uniform grid appearance */
+const RANDOM_KEEP_THRESHOLD = 0.8
 
 /**
  * Stage 3 debug — sample RM EYE from an in-memory canvas mask only.
@@ -25,6 +28,7 @@ export function createRmEyeParticleMask(scale = DEFAULT_SCALE): RmEyeParticleDat
     console.error('RM EYE mask: failed to acquire 2D context')
     return {
       positions: new Float32Array(0),
+      randoms: new Float32Array(0),
       count: 0,
       boundingBox: new THREE.Box3(),
     }
@@ -40,20 +44,24 @@ export function createRmEyeParticleMask(scale = DEFAULT_SCALE): RmEyeParticleDat
   const imageData = ctx.getImageData(0, 0, MASK_WIDTH, MASK_HEIGHT)
   const pixels = imageData.data
   const coords: number[] = []
+  const randoms: number[] = []
 
   for (let y = 0; y < MASK_HEIGHT; y += SAMPLE_GAP) {
     for (let x = 0; x < MASK_WIDTH; x += SAMPLE_GAP) {
       const i = (y * MASK_WIDTH + x) * 4
       const alpha = pixels[i + 3]
       if (alpha > 128) {
+        if (Math.random() > RANDOM_KEEP_THRESHOLD) continue
         coords.push((x - MASK_WIDTH / 2) * scale)
         coords.push(-(y - MASK_HEIGHT / 2) * scale)
         coords.push(0)
+        randoms.push(Math.random())
       }
     }
   }
 
   const positions = new Float32Array(coords)
+  const randomArray = new Float32Array(randoms)
   const count = positions.length / 3
 
   const geometry = new THREE.BufferGeometry()
@@ -73,5 +81,5 @@ export function createRmEyeParticleMask(scale = DEFAULT_SCALE): RmEyeParticleDat
     console.error('RM EYE mask generation failed — particle count is 0')
   }
 
-  return { positions, count, boundingBox }
+  return { positions, randoms: randomArray, count, boundingBox }
 }

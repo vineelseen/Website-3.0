@@ -26,6 +26,7 @@ export function RMEyeParticles() {
   const geometry = useMemo(() => {
     const geo = new THREE.BufferGeometry()
     geo.setAttribute('position', new THREE.Float32BufferAttribute(particleData.positions, 3))
+    geo.setAttribute('aRandom', new THREE.Float32BufferAttribute(particleData.randoms, 1))
     return geo
   }, [particleData])
 
