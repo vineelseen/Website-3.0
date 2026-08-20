@@ -30,6 +30,9 @@ export function FoundationScene() {
         antialias: true,
         powerPreference: 'high-performance',
       }}
+      onCreated={({ gl }) => {
+        gl.setClearColor(0x000000, 0)
+      }}
       dpr={[1, 2]}
       style={{ position: 'absolute', inset: 0 }}
     >
