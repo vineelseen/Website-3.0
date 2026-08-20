@@ -35,7 +35,7 @@
   height: 100% !important;
 }
 
-/* Reserved for later stages — HTML headline + CTA overlay */
+/* HTML overlay — headline, CTA, and future RM EYE */
 .hero-foundation__content {
   position: absolute;
   inset: 0;

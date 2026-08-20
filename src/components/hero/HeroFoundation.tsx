@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import { FoundationScene } from '../three/FoundationScene'
+import { HeroTypography } from './HeroTypography'
 import './HeroFoundation.css'
 
 /**
- * Stage 1 hero — foundation only.
+ * Stage 1–2 hero foundation.
  *
- * Layer order (prepared for later stages):
+ * Layer order:
  *   1. CSS background gradient
- *   2. Three.js particle ecosystem (empty canvas for now)
- *   3. RM EYE (future)
- *   4. HTML headline (future)
- *   5. CTA (future)
+ *   2. Three.js canvas (empty for now)
+ *   3. HTML headline + CTA (Stage 2)
+ *   4. RM EYE (Stage 3 — future)
  */
 export function HeroFoundation() {
   const [webglSupported, setWebglSupported] = useState(true)
@@ -35,8 +35,9 @@ export function HeroFoundation() {
         </div>
       )}
 
-      {/* Reserved for Stage 4+ HTML layers — intentionally empty in Stage 1 */}
-      <div className="hero-foundation__content" aria-hidden="true" />
+      <div className="hero-foundation__content">
+        <HeroTypography />
+      </div>
     </section>
   )
 }
