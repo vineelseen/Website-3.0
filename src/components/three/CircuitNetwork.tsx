@@ -18,18 +18,20 @@ export function CircuitNetwork() {
   const { reducedMotion, performance, isMobile } = useHeroContext()
 
   const { geometry, material } = useMemo(() => {
-    const hub = new THREE.Vector3(...RM_EYE_POSITION)
     const visibleConfigs = isMobile
       ? ASSET_CONFIGS.filter((a) => a.mobileVisible)
       : ASSET_CONFIGS
 
-    const traceCount = Math.floor(40 * performance.particleMultiplier)
+    const traceCount = Math.floor(28 * performance.particleMultiplier)
     const allPositions: number[] = []
     const allRandoms: number[] = []
     const allAlong: number[] = []
 
     for (const config of visibleConfigs) {
       const from = new THREE.Vector3(...config.position)
+      const hub = new THREE.Vector3(...RM_EYE_POSITION)
+      hub.x += (Math.random() - 0.5) * 0.08
+      hub.y += (Math.random() - 0.5) * 0.06
       const waypoints = createManhattanPath(from, hub)
       const sampled = samplePath(waypoints, traceCount)
       allPositions.push(...sampled.positions)
@@ -47,7 +49,7 @@ export function CircuitNetwork() {
       fragmentShader: circuitFragmentShader,
       uniforms: {
         uTime: { value: 0 },
-        uIntensity: { value: 0.14 },
+        uIntensity: { value: 0.17 },
         uActive: { value: 0 },
         uReducedMotion: { value: 0 },
         uColor: { value: hexToVec3(RM_COLORS.darkBlue) },
@@ -76,5 +78,5 @@ export function CircuitNetwork() {
     }
   }, [geometry, material])
 
-  return <points geometry={geometry} material={material} />
+  return <points geometry={geometry} material={material} renderOrder={1} />
 }

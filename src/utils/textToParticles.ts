@@ -15,6 +15,7 @@ export function textToParticles(
     fontSize?: number
     spacing?: number
     density?: number
+    scale?: number
   } = {},
 ): TextParticleData {
   const {
@@ -22,6 +23,7 @@ export function textToParticles(
     fontSize = 72,
     spacing = 1.2,
     density = 1,
+    scale = 0.012,
   } = options
 
   const canvas = document.createElement('canvas')
@@ -62,7 +64,6 @@ export function textToParticles(
   const positions = new Float32Array(count * 3)
   const randoms = new Float32Array(count)
 
-  const scale = 0.012
   for (let i = 0; i < count; i++) {
     const { x, y } = candidates[i]
     const i3 = i * 3

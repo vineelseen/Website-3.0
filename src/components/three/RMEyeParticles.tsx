@@ -23,9 +23,10 @@ export function RMEyeParticles() {
     const density = performance.particleMultiplier
     const step = density < 0.5 ? 0.55 : density < 0.8 ? 0.8 : 1
     return textToParticles('RM EYE', {
-      font: '600 64px Orbitron, sans-serif',
-      fontSize: 64,
+      font: '600 52px Orbitron, sans-serif',
+      fontSize: 52,
       density: step,
+      scale: 0.0058,
     })
   }, [performance.particleMultiplier])
 
@@ -84,8 +85,8 @@ export function RMEyeParticles() {
   }, [geometry, material])
 
   return (
-    <group position={RM_EYE_POSITION}>
-      <points geometry={geometry} material={material} />
+    <group position={RM_EYE_POSITION} renderOrder={3}>
+      <points geometry={geometry} material={material} renderOrder={3} />
     </group>
   )
 }

@@ -32,19 +32,19 @@ export const assetVertexShader = /* glsl */ `
       : 0.0;
 
     float intensity = uIntensity + hoverBoost + weightBoost + proximity;
-    vAlpha = clamp(intensity, 0.06, 0.55);
+    vAlpha = clamp(intensity, 0.15, 0.72);
 
-    pos.z -= uPushBack * 0.2;
+    pos.z -= uPushBack * 0.15;
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
     vDepth = -mvPosition.z;
 
-    float depthScale = clamp(6.5 / vDepth, 0.5, 1.4);
-    float sizeBase = (1.2 + aRandom * 0.6 + aWeight * 0.1) * depthScale;
-    float sizeBoost = 1.0 + uHover * 0.5 + proximity * 0.2;
-    gl_PointSize = sizeBase * sizeBoost * (180.0 / vDepth);
-    gl_PointSize = clamp(gl_PointSize, 0.35, 3.2);
+    float depthScale = clamp(6.5 / vDepth, 0.65, 1.5);
+    float sizeBase = (1.5 + aRandom * 0.7 + aWeight * 0.12) * depthScale;
+    float sizeBoost = 1.0 + uHover * 0.45 + proximity * 0.15;
+    gl_PointSize = sizeBase * sizeBoost * (190.0 / vDepth);
+    gl_PointSize = clamp(gl_PointSize, 0.5, 3.8);
   }
 `
 
@@ -64,9 +64,9 @@ export const assetFragmentShader = /* glsl */ `
     float soft = 1.0 - smoothstep(0.0, 0.5, dist);
     float core = 1.0 - smoothstep(0.0, 0.1, dist);
 
-    float depthFade = clamp(1.0 - (vDepth - 4.0) * 0.08, 0.4, 1.0);
-    vec3 color = mix(uColorDark, uColorPrimary, core * 0.6);
-    color = mix(color, uColorHighlight, core * 0.25);
+    float depthFade = clamp(1.0 - (vDepth - 4.0) * 0.04, 0.72, 1.0);
+    vec3 color = mix(uColorDark, uColorPrimary, core * 0.75);
+    color = mix(color, uColorHighlight, core * 0.4);
 
     float alpha = soft * vAlpha * depthFade;
     gl_FragColor = vec4(color, alpha);
@@ -97,17 +97,17 @@ export const rmEyeVertexShader = /* glsl */ `
     gl_Position = projectionMatrix * mvPosition;
 
     float breath = sin(uTime * 1.5) * 0.5 + 0.5;
-    float breathingIntensity = mix(0.48, 0.78, breath);
+    float breathingIntensity = mix(0.55, 0.88, breath);
     float variation = sin(uTime * 1.5 + aRandom * 2.0) * 0.04;
     float pulse = uReceivePulse * 0.2;
-    float finalIntensity = clamp(breathingIntensity + variation + pulse, 0.35, 0.95);
+    float finalIntensity = clamp(breathingIntensity + variation + pulse, 0.45, 1.0);
 
     vAlpha = finalIntensity;
     vGlow = breathingIntensity + pulse;
 
-    float size = (2.0 + aRandom * 0.8) * (1.0 + uReceivePulse * 0.15 + breath * 0.08);
-    gl_PointSize = size * (200.0 / -mvPosition.z);
-    gl_PointSize = clamp(gl_PointSize, 0.8, 4.5);
+    float size = (2.8 + aRandom * 1.0) * (1.0 + uReceivePulse * 0.12 + breath * 0.06);
+    gl_PointSize = size * (220.0 / -mvPosition.z);
+    gl_PointSize = clamp(gl_PointSize, 1.2, 5.5);
   }
 `
 
@@ -150,10 +150,15 @@ export const circuitVertexShader = /* glsl */ `
 
     float base = uIntensity + uActive * 0.12;
     float flicker = uReducedMotion > 0.5 ? 0.0 : sin(uTime * 0.5 + aRandom * 10.0) * 0.02;
-    vAlpha = clamp(base + flicker, 0.04, 0.25);
+    float hubFade = smoothstep(1.0, 0.78, aAlong);
+    float centerDist = length(pos.xy - vec2(0.0, 0.55));
+    float centerFade = smoothstep(0.85, 0.2, centerDist);
+    float headlineZone = step(abs(pos.x), 3.2) * step(abs(pos.y - 0.55), 0.45);
+    float headlineFade = 1.0 - headlineZone * 0.95;
+    vAlpha = clamp((base + flicker) * hubFade * centerFade * headlineFade, 0.03, 0.22);
 
-    gl_PointSize = (0.6 + aRandom * 0.3) * (100.0 / -mvPosition.z);
-    gl_PointSize = clamp(gl_PointSize, 0.25, 1.8);
+    gl_PointSize = (0.65 + aRandom * 0.3) * (105.0 / -mvPosition.z);
+    gl_PointSize = clamp(gl_PointSize, 0.3, 1.8);
   }
 `
 
@@ -200,8 +205,13 @@ export const dataFlowVertexShader = /* glsl */ `
     float idlePulse = uReducedMotion > 0.5 ? 0.0 : smoothstep(0.1, 0.0, abs(aProgress - fract(uTime * 0.03 + aRandom))) * 0.3;
 
     float activeBoost = uActive * 0.7;
+    float centerDist = length(pos.xy - vec2(0.0, 0.55));
+    float centerFade = smoothstep(0.75, 0.15, centerDist);
+    float headlineZone = step(abs(pos.x), 3.2) * step(abs(pos.y - 0.55), 0.45);
+    float headlineFade = 1.0 - headlineZone * 0.95;
     vAlpha = uOpacity * (0.08 + pulse * (0.4 + activeBoost) + idlePulse * 0.15);
     vAlpha *= 0.6 + aRandom * 0.4;
+    vAlpha *= centerFade * headlineFade;
 
     float size = (0.7 + aRandom * 0.4 + pulse * 0.5 + activeBoost * 0.3) * (90.0 / -mvPosition.z);
     gl_PointSize = clamp(size, 0.25, 2.2);

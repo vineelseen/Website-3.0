@@ -125,7 +125,7 @@ export function ParticleAsset({ config }: ParticleAssetProps) {
 
   return (
     <group position={config.position} rotation={config.rotation} scale={config.scale}>
-      <points geometry={pointsGeometry} material={material} />
+      <points geometry={pointsGeometry} material={material} renderOrder={0} />
       <mesh onPointerOver={handlePointerOver} onPointerOut={handlePointerOut} visible={false}>
         <boxGeometry args={[hx, hy, hz]} />
         <meshBasicMaterial transparent opacity={0} />

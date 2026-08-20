@@ -24,11 +24,11 @@ function EcosystemContent() {
       <CameraParallax />
       <CursorInteraction />
 
-      <CircuitNetwork />
-
       {visibleAssets.map((config) => (
         <ParticleAsset key={config.id} config={config} />
       ))}
+
+      <CircuitNetwork />
 
       {visibleAssets.map((config) => (
         <DataFlow key={`flow-${config.id}`} sourceConfig={config} />

@@ -10,23 +10,33 @@
 .hero-content__center {
   position: absolute;
   left: 50%;
-  top: 52%;
+  top: 56%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: min(90vw, 920px);
-  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(2rem, 4vw, 3.5rem);
-  background: rgba(14, 58, 138, 0.22);
-  border: 1px solid rgba(25, 79, 144, 0.25);
-  box-shadow: 0 0 80px rgba(14, 58, 138, 0.08);
+  background: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  padding: 0;
+  width: auto;
+  max-width: none;
+}
+
+.hero-content__rm-eye-spacer {
+  width: clamp(260px, 17vw, 340px);
+  height: clamp(2.25rem, 3.2vw, 2.75rem);
+  flex-shrink: 0;
 }
 
 .hero-content__heading {
   font-family: 'Orbitron', sans-serif;
   font-weight: 700;
-  font-size: clamp(42px, 4.2vw, 82px);
+  width: max-content;
+  max-width: 90vw;
+  font-size: clamp(44px, 3.6vw, 72px);
   line-height: 1.08;
   letter-spacing: -0.02em;
   color: #ffffff;
@@ -38,12 +48,13 @@
 
 .hero-content__heading span {
   display: block;
+  white-space: nowrap;
 }
 
 .hero-content__cta {
-  margin-top: clamp(1.25rem, 2vw, 1.75rem);
+  margin-top: clamp(1rem, 1.8vw, 1.5rem);
   font-family: 'Orbitron', sans-serif;
-  font-size: clamp(0.65rem, 0.85vw, 0.8rem);
+  font-size: clamp(0.65rem, 0.75vw, 0.78rem);
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -76,24 +87,27 @@
 .hero-content__label {
   position: absolute;
   font-family: 'Orbitron', sans-serif;
-  font-size: clamp(0.55rem, 0.7vw, 0.7rem);
+  font-size: clamp(0.55rem, 0.65vw, 0.68rem);
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(26, 58, 110, 0.55);
+  color: rgba(37, 99, 235, 0.35);
   pointer-events: none;
   white-space: nowrap;
 }
 
 @media (max-width: 768px) {
   .hero-content__center {
-    top: 55%;
+    top: 58%;
     width: 92vw;
   }
 
   .hero-content__heading {
-    font-size: clamp(28px, 7vw, 42px);
-    letter-spacing: -0.01em;
+    font-size: clamp(24px, 5.5vw, 36px);
+  }
+
+  .hero-content__heading span {
+    white-space: normal;
   }
 
   .hero-content__label {

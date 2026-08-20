@@ -92,5 +92,5 @@ export function DataFlow({ sourceConfig }: DataFlowProps) {
     }
   }, [geometry, material])
 
-  return <points geometry={geometry} material={material} />
+  return <points geometry={geometry} material={material} renderOrder={2} />
 }
