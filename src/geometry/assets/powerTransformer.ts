@@ -73,13 +73,31 @@ function buildHVBushing(x: number, z: number): GeometryPart[] {
   return parts
 }
 
+function buildLVBushing(x: number, z: number, baseY = 0.76): GeometryPart[] {
+  const parts: GeometryPart[] = []
+
+  parts.push({
+    create: () => cylinder(0.06, 0.07, 0.12, 10),
+    position: [x, baseY, z],
+    weight: 1.0,
+  })
+
+  for (let i = 0; i < 3; i++) {
+    parts.push({
+      create: () => cylinder(0.055 - i * 0.003, 0.045 - i * 0.002, 0.04, 10),
+      position: [x, baseY + 0.1 + i * 0.05, z],
+      weight: 0.95,
+    })
+  }
+
+  return parts
+}
+
 function buildLVBushings(): GeometryPart[] {
   return [
-    { create: () => cylinder(0.055, 0.065, 0.18, 10), position: [-0.35, 0.78, -0.38], weight: 1.15 },
-    { create: () => cylinder(0.05, 0.06, 0.12, 10), position: [-0.35, 0.92, -0.38], weight: 0.9 },
-    { create: () => cylinder(0.055, 0.065, 0.18, 10), position: [0.2, 0.78, -0.42], weight: 1.1 },
-    { create: () => cylinder(0.05, 0.06, 0.12, 10), position: [0.2, 0.92, -0.42], weight: 0.85 },
-    { create: () => cylinder(0.045, 0.055, 0.15, 10), position: [0.55, 0.76, -0.3], weight: 1.0 },
+    ...buildLVBushing(-0.35, -0.38),
+    ...buildLVBushing(0.2, -0.42),
+    ...buildLVBushing(0.55, -0.3, 0.74),
   ]
 }
 

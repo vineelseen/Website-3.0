@@ -1,13 +1,15 @@
 /** Stage 4 — power transformer placement (camera locked at [0,0,12], fov 42) */
 export const POWER_TRANSFORMER_STAGE4 = {
-  position: [-5.05, 1.02, -1.75] as [number, number, number],
-  rotation: [-0.06, 0.58, 0] as [number, number, number],
-  scale: 1.52,
+  /** Upper-left three-quarter placement tuned for 1920×1080 debug inspection */
+  position: [-4.95, 0.95, -1.5] as [number, number, number],
+  rotation: [-0.05, 0.52, 0] as [number, number, number],
+  /** Stage 4A debug scale — ~29% viewport width, ~40% height */
+  scale: 1.42,
   particleCount: 4200,
   idleIntensity: 0.52,
   labelText: 'POWER TRANSFORMER',
   label: { left: '7%', top: '16%' },
 } as const
 
-/** Toggle wireframe geometry inspection (4A) vs particle cloud (4B) */
-export const POWER_TRANSFORMER_RENDER_MODE: 'wireframe' | 'particles' = 'particles'
+/** Stage 4A only — geometry debug. Stage 4B (particles) disabled until approved. */
+export const POWER_TRANSFORMER_RENDER_MODE: 'wireframe' | 'particles' = 'wireframe'
