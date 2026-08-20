@@ -1,0 +1,35 @@
+.particle-hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #000000;
+}
+
+.particle-hero__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #000000;
+}
+
+.particle-hero__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.particle-hero__canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.particle-hero__fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #000000;
+}
