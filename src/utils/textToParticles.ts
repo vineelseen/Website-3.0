@@ -50,7 +50,7 @@ export function textToParticles(
   const pixels = imageData.data
   const candidates: { x: number; y: number }[] = []
 
-  const step = density < 0.7 ? 3 : density < 0.9 ? 2 : 1
+  const step = density < 0.7 ? 3 : 2
   for (let y = 0; y < h; y += step) {
     for (let x = 0; x < w; x += step) {
       const i = (y * w + x) * 4

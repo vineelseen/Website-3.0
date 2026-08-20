@@ -1,4 +1,5 @@
 import { Canvas } from '@react-three/fiber'
+import { RMEyeTypography } from './RMEyeTypography'
 
 /**
  * Stage 1 camera foundation — stable coordinate system for later stages.
@@ -36,7 +37,8 @@ export function FoundationScene() {
       dpr={[1, 2]}
       style={{ position: 'absolute', inset: 0 }}
     >
-      {/* Stage 1: intentionally empty — no meshes, particles, lights, or helpers */}
+      {/* Stage 3: RM EYE particle typography only */}
+      <RMEyeTypography />
     </Canvas>
   )
 }

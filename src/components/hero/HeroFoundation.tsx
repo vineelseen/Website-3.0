@@ -4,13 +4,12 @@ import { HeroTypography } from './HeroTypography'
 import './HeroFoundation.css'
 
 /**
- * Stage 1–2 hero foundation.
+ * Stage 1–3 hero foundation.
  *
  * Layer order:
  *   1. CSS background gradient
- *   2. Three.js canvas (empty for now)
- *   3. HTML headline + CTA (Stage 2)
- *   4. RM EYE (Stage 3 — future)
+ *   2. Three.js canvas — RM EYE particles (Stage 3)
+ *   3. HTML headline + CTA (Stage 2, locked)
  */
 export function HeroFoundation() {
   const [webglSupported, setWebglSupported] = useState(true)
