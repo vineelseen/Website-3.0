@@ -1,0 +1,8 @@
+.home-hero {
+  position: relative;
+  min-height: 100vh;
+}
+
+.home-hero .hero-foundation {
+  min-height: 100vh;
+}

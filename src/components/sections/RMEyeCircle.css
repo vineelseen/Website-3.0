@@ -1,0 +1,89 @@
+.rm-eye-circle {
+  background: #fff;
+}
+
+.rm-eye-circle__header {
+  max-width: 52rem;
+  margin-bottom: 3rem;
+}
+
+.rm-eye-circle__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.rm-eye-circle__wheel {
+  position: relative;
+  width: 360px;
+  height: 360px;
+  margin-inline: auto;
+}
+
+.rm-eye-circle__center {
+  position: absolute;
+  inset: 50%;
+  width: 120px;
+  height: 120px;
+  margin: -60px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--rm-gradient);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  box-shadow: 0 16px 40px rgba(25, 79, 139, 0.25);
+}
+
+.rm-eye-circle__node {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 110px;
+  margin: -28px -55px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--rm-text);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.rm-eye-circle__node img {
+  width: 42px;
+  height: 42px;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: var(--rm-light);
+  border: 2px solid transparent;
+}
+
+.rm-eye-circle__node--active img,
+.rm-eye-circle__node:hover img {
+  border-color: var(--rm-primary);
+  background: #fff;
+}
+
+.rm-eye-circle__detail h3 {
+  margin: 0 0 1rem;
+  font-size: 1.75rem;
+  color: var(--rm-navy);
+}
+
+.rm-eye-circle__detail p {
+  margin: 0 0 1rem;
+  color: var(--rm-muted);
+}
+
+@media (max-width: 1024px) {
+  .rm-eye-circle__layout {
+    grid-template-columns: 1fr;
+  }
+}

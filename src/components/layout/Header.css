@@ -1,0 +1,136 @@
+.rm-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  transition: background 300ms ease, box-shadow 300ms ease;
+}
+
+.rm-header--scrolled {
+  background: rgba(8, 7, 49, 0.96);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.rm-header__utility {
+  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rm-header__utility-inner {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  padding-block: 0.45rem;
+  font-size: 0.8rem;
+}
+
+.rm-header__utility a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+}
+
+.rm-header__utility a:hover {
+  color: #fff;
+}
+
+.rm-header__main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 1rem;
+}
+
+.rm-header__logo img {
+  display: block;
+  height: 42px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.rm-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.rm-header__nav ul {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rm-header__nav a {
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.rm-header__nav a:hover {
+  color: #7eb3ea;
+}
+
+.rm-header__cta {
+  padding: 0.7rem 1.25rem;
+  font-size: 0.875rem;
+}
+
+.rm-header__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.rm-header__toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #fff;
+}
+
+@media (max-width: 1024px) {
+  .rm-header__utility {
+    display: none;
+  }
+
+  .rm-header__toggle {
+    display: flex;
+  }
+
+  .rm-header__nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(8, 7, 49, 0.98);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+
+  .rm-header__nav--open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .rm-header__nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}
