@@ -1,0 +1,63 @@
+.rm-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--rm-radius-lg);
+  font-family: var(--rm-font-body);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.28s ease,
+    color 0.28s ease,
+    border-color 0.28s ease,
+    transform 0.28s ease;
+}
+
+.rm-button:hover,
+.rm-button:focus-visible {
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.rm-button--primary {
+  background: var(--rm-brand);
+  color: var(--rm-white);
+}
+
+.rm-button--primary:hover,
+.rm-button--primary:focus-visible {
+  background: transparent;
+  background-image: var(--rm-gradient-cta);
+  color: var(--rm-white);
+  border-color: #d4d4d4;
+}
+
+.rm-button--secondary {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--rm-brand);
+  border-color: var(--rm-primary);
+}
+
+.rm-button--secondary:hover,
+.rm-button--secondary:focus-visible {
+  background: transparent;
+  background-image: var(--rm-gradient-cta);
+  color: var(--rm-white);
+  border-color: #d4d4d4;
+}
+
+.rm-button--outline {
+  background: transparent;
+  color: var(--rm-white);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.rm-button--outline:hover,
+.rm-button--outline:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+}

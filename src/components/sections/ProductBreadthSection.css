@@ -1,0 +1,9 @@
+.product-section {
+  padding: 80px 0 40px;
+  background: var(--rm-white);
+}
+
+.product-section__inner {
+  width: var(--rm-container);
+  margin: 0 auto;
+}

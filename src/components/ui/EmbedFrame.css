@@ -1,0 +1,11 @@
+.embed-frame {
+  width: 100%;
+  overflow: hidden;
+}
+
+.embed-frame__iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+}
