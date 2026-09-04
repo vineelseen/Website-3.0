@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+.hero-typography {
+  position: absolute;
+  left: 50%;
+  top: 57%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: max-content;
+  max-width: 94vw;
+  background: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  padding: 0;
+  pointer-events: none;
+}
+
+.hero-typography__title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: clamp(44px, 3.6vw, 72px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: #f7f8fa;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+}
+
+.hero-typography__title span {
+  display: block;
+  white-space: nowrap;
+}
+
+.hero-typography__cta {
+  margin-top: clamp(18px, 1.4vw, 26px);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #5b9be0;
+  text-decoration: none;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color 280ms ease;
+}
+
+.hero-typography__arrow {
+  display: inline-block;
+  transition: transform 280ms ease;
+}
+
+.hero-typography__cta:hover,
+.hero-typography__cta:focus-visible {
+  color: #7eb3ea;
+  outline: none;
+}
+
+.hero-typography__cta:hover .hero-typography__arrow,
+.hero-typography__cta:focus-visible .hero-typography__arrow {
+  transform: translateX(5px);
+}
+
+@media (max-width: 1024px) {
+  .hero-typography {
+    top: 57%;
+  }
+
+  .hero-typography__title {
+    font-size: clamp(36px, 4.2vw, 58px);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-typography {
+    top: 58%;
+    max-width: 92vw;
+  }
+
+  .hero-typography__title {
+    font-size: clamp(26px, 6vw, 40px);
+    letter-spacing: -0.01em;
+  }
+
+  .hero-typography__title span {
+    white-space: normal;
+  }
+
+  .hero-typography__cta {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-typography__cta,
+  .hero-typography__arrow {
+    transition: none;
+  }
+}

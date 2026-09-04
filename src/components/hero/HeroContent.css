@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
+
+.hero-content {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hero-content__center {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  padding: 0;
+  width: auto;
+  max-width: none;
+}
+
+.hero-content__rm-eye-spacer {
+  width: clamp(260px, 17vw, 340px);
+  height: clamp(2.25rem, 3.2vw, 2.75rem);
+  flex-shrink: 0;
+}
+
+.hero-content__heading {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  width: max-content;
+  max-width: 90vw;
+  font-size: clamp(44px, 3.6vw, 72px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+}
+
+.hero-content__heading span {
+  display: block;
+  white-space: nowrap;
+}
+
+.hero-content__cta {
+  margin-top: clamp(1rem, 1.8vw, 1.5rem);
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(0.65rem, 0.75vw, 0.78rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5b9be0;
+  text-decoration: none;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color 400ms ease, filter 400ms ease;
+}
+
+.hero-content__arrow {
+  display: inline-block;
+  transition: transform 400ms ease;
+}
+
+.hero-content__cta:hover,
+.hero-content__cta:focus-visible {
+  color: #7eb3ea;
+  filter: brightness(1.15);
+  outline: none;
+}
+
+.hero-content__cta:hover .hero-content__arrow,
+.hero-content__cta:focus-visible .hero-content__arrow {
+  transform: translateX(5px);
+}
+
+.hero-content__label {
+  position: absolute;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(0.55rem, 0.65vw, 0.68rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(37, 99, 235, 0.35);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .hero-content__center {
+    top: 58%;
+    width: 92vw;
+  }
+
+  .hero-content__heading {
+    font-size: clamp(24px, 5.5vw, 36px);
+  }
+
+  .hero-content__heading span {
+    white-space: normal;
+  }
+
+  .hero-content__label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content__cta,
+  .hero-content__arrow {
+    transition: none;
+  }
+}

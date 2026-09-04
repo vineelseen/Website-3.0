@@ -1,0 +1,15 @@
+.ecosystem-section {
+  padding: 80px 0 40px;
+  background: var(--rm-white);
+}
+
+.ecosystem-section__inner {
+  width: var(--rm-container);
+  margin: 0 auto;
+}
+
+.ecosystem-section__cta {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
