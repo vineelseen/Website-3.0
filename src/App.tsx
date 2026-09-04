@@ -1,8 +1,8 @@
-import { HeroFoundation } from './components/hero'
+import { HomePage } from './pages/HomePage'
 import './App.css'
 
 function App() {
-  return <HeroFoundation />
+  return <HomePage />
 }
 
 export default App

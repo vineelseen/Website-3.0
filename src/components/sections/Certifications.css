@@ -1,0 +1,29 @@
+.certifications {
+  background: #fff;
+}
+
+.certifications__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.certifications__logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.certifications__logos img {
+  height: 72px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 1024px) {
+  .certifications__grid {
+    grid-template-columns: 1fr;
+  }
+}

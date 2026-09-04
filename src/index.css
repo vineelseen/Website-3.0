@@ -6,18 +6,22 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body,
 #root {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
 }
 
 body {
+  margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #020817;
-  color: #f8fafc;
+  background: #ffffff;
+  color: #373737;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

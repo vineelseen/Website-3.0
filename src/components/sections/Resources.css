@@ -1,0 +1,51 @@
+.resources {
+  background: var(--rm-gradient);
+  color: #fff;
+}
+
+.resources__header {
+  margin-bottom: 2rem;
+}
+
+.resources .rm-heading,
+.resources .rm-eyebrow {
+  color: #fff;
+}
+
+.resources__card {
+  padding: 2rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.resources__card h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+}
+
+.resources__card p {
+  margin: 0 0 1rem;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.resources__card a {
+  color: #7eb3ea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.resources__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.resources__cta .rm-btn {
+  background: #fff;
+  color: var(--rm-primary);
+}
+
+.resources__cta .rm-btn:hover {
+  background: #f0f4fa;
+}
